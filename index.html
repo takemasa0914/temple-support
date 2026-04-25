@@ -1,1 +1,115 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>寺院 名簿・法要・会計 管理</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>寺院 名簿・法要・会計 管理（プロトタイプ）</h1>
+      <p>
+        戸主名ベースの名簿、故人情報、年回忌の案内、法要実施、お布施、寺院会計・個人会計の分離管理を一元化します。
+      </p>
+    </header>
 
+    <main>
+      <section class="card">
+        <h2>1. 戸主（檀家）登録</h2>
+        <form id="household-form" class="grid-form">
+          <label>戸主ID <input name="householdId" required placeholder="HH-0001" /></label>
+          <label>戸主名 <input name="householderName" required /></label>
+          <label>ふりがな <input name="householderKana" /></label>
+          <label>電話番号 <input name="phone" /></label>
+          <label>住所 <input name="address" /></label>
+          <button type="submit">戸主を保存</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>2. 故人登録（葬儀時）</h2>
+        <form id="deceased-form" class="grid-form">
+          <label>故人ID <input name="deceasedId" required placeholder="DC-0001" /></label>
+          <label>紐付け戸主ID <input name="householdId" required placeholder="HH-0001" /></label>
+          <label>俗名（お名前） <input name="secularName" required /></label>
+          <label>院号・法名 <input name="dharmaName" required /></label>
+          <label>没年齢 <input name="ageAtDeath" type="number" min="0" /></label>
+          <label>死亡年月日 <input name="deathDate" type="date" required /></label>
+          <label>葬儀法要の有無
+            <select name="funeralServiceHeld">
+              <option value="true">あり</option>
+              <option value="false">なし</option>
+            </select>
+          </label>
+          <label>葬儀時のお布施金額（円） <input name="offeringAmount" type="number" min="0" value="0" /></label>
+          <button type="submit">故人情報を保存</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>3. 法要実施・入金登録</h2>
+        <form id="service-form" class="grid-form">
+          <label>法要ID <input name="serviceId" required placeholder="SV-0001" /></label>
+          <label>故人ID <input name="deceasedId" required placeholder="DC-0001" /></label>
+          <label>法要区分
+            <select name="serviceType">
+              <option>初七日</option>
+              <option>四十九日</option>
+              <option>一周忌</option>
+              <option>三回忌</option>
+              <option>七回忌</option>
+              <option>十三回忌</option>
+              <option>その他</option>
+            </select>
+          </label>
+          <label>実施日 <input name="serviceDate" type="date" required /></label>
+          <label>お布施金額（円） <input name="offeringAmount" type="number" min="0" required /></label>
+          <label>会計区分
+            <select name="accountType">
+              <option value="temple">寺院（宗教法人）</option>
+              <option value="personal">個人</option>
+            </select>
+          </label>
+          <button type="submit">法要・入金を保存</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>4. 支出登録（寺院 / 個人）</h2>
+        <form id="expense-form" class="grid-form">
+          <label>支出ID <input name="expenseId" required placeholder="EX-0001" /></label>
+          <label>支出日 <input name="expenseDate" type="date" required /></label>
+          <label>用途 <input name="category" required placeholder="法要供物 / 通信費 など" /></label>
+          <label>金額（円） <input name="amount" type="number" min="0" required /></label>
+          <label>会計区分
+            <select name="accountType">
+              <option value="temple">寺院（宗教法人）</option>
+              <option value="personal">個人</option>
+            </select>
+          </label>
+          <label>摘要 <input name="memo" /></label>
+          <button type="submit">支出を保存</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>5. Googleスプレッドシート連携設定</h2>
+        <form id="settings-form" class="grid-form">
+          <label>Apps Script Web App URL
+            <input name="webhookUrl" placeholder="https://script.google.com/macros/s/.../exec" />
+          </label>
+          <button type="submit">接続先を保存</button>
+        </form>
+        <p class="hint">保存後、各フォーム送信時にJSONをWeb AppへPOSTします（同時にローカル表示）。</p>
+      </section>
+
+      <section class="card">
+        <h2>6. 送信ログ</h2>
+        <pre id="log"></pre>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
